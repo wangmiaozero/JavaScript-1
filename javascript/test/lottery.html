@@ -12,9 +12,14 @@
         el: "#app",
         data() {
             return {
-                /** 双色球，33个球最少抽6个红球，16个球最少抽1个，组合起来，价格是2
+                /** 双色球，
+                 * 33个球最少抽6个红球，16个球最少抽1个，组合起来，价格是2
                  * 单式：33个红球只选6个，16个蓝球直选1个
                  * 复式：红球多于6个少于33个，篮球多于1个少于16个
+                 * 投注倍数范围为2-99倍；
+                 * 单投注金额不超过20000元；
+                 * 每周二、四、日开奖
+                 * 浙江福彩参考：http://www.zjflcp.com/ch120/system/2018/08/12/031070186.shtml
                  * */
                 dualColor: {
                     title: "双色球",
@@ -31,6 +36,7 @@
                  * 前胆选取：前区胆码m，拖码n，后区x，则C(5, 5-m)*C(x, 2)
                  * 后胆选取：后区胆码m，拖码n，则C(n, 1)
                  * 追加投注：每注追加1元人民币
+                 * 浙江体彩才考：https://zjlottery.com/Rule/Lotto/201902/10750.html
                  * */
                 superLotto: {
                     title: "大乐透",
@@ -54,6 +60,7 @@
                  * 可以选择多组，1至5组数据；
                  * 可以连续1至7期；
                  * 可以多倍投注，投注倍数为2至99倍，单张彩票不超过20000元；
+                 * 浙江福彩3D参考：http://www.zjflcp.com/ch120/system/2018/08/10/031069199.shtml
                  * */
                 welfare3d: {
                     title: "福彩3D",
@@ -79,6 +86,7 @@
                  * 组选6：3个数字都不相同，排列，6注；
                  * 不能多期投注；
                  * 可以多倍投注，投注倍数为2至99倍，单张彩票不超过20000元；
+                 * 浙江体彩排列三：https://zjlottery.com/Rule/Lotto/201409/10770.html
                  */
                 arrange3: {
                     title: "排列3",
@@ -93,6 +101,7 @@
                 /** 排列5
                  * 单票投注上限10000注；
                  * 可以多倍投注，投注倍数为2至99倍；
+                 * 浙江体彩排列五：https://zjlottery.com/Rule/Lotto/201005/10771.html
                  */
                 arrange5: {
                     title: "排列5",
@@ -106,6 +115,7 @@
                  * 复式：30选8至16个，组合出7个作为一注；
                  * 胆拖：30选1至6个作为胆码，再补充其他不同的，组合出7个作为一注；
                  * 多倍投注：投注倍数为2至99倍；
+                 * 浙江福彩七乐彩：http://www.zjflcp.com/ch120/system/2018/08/12/031070167.shtml
                  */
                 sevenHappy: {
                     title: "七乐彩",
@@ -125,6 +135,7 @@
                  * 生肖复式：6位中都是1位，生肖码区选取2个或2个以上；
                  * 双区复式：6位中的一位或任几位选择2个以上，生肖码区选取2个或2个以上；
                  * 多倍投注：投注倍数为2至99倍，单张大投注数不超过10000注；
+                 * 浙江福彩6+1：http://www.zjflcp.com/ch120/system/2018/08/12/031070154.shtml
                  */
                 sixPlusOne: {
                     title: "东方6+1",
@@ -157,6 +168,57 @@
             // this.calcArrange3()
             // 七彩乐
             // this.calcSevenHappy()
+            // 前区中3个号，后区中1个
+
+            /**
+             *  35选5,12选2
+             */
+            let fSelect = 6, // 用户前区选择6个
+                eSelect = 3, // 用户后区选择3个
+                fBet = 5,    // 前区必须选择5个
+                eBet = 2,    // 后区必须选择2个
+                fHit = 3,    // 前区命中3个，
+                eHit = 1,    // 后区命中1个
+                amount = 0;
+
+            // 八等奖 3 + 1
+            amount += this.combine(3, 2) * this.combine(2, 1) * 15
+            // 九等奖 3 + 0
+            amount += this.combine(3, 2) * 5
+            // 九等奖 2 + 1
+            amount += this.combine(3, 2) * this.combine(3, 3) * this.combine(2, 1) * 5
+            console.log(amount) // 135
+
+            amount = 0
+            // 九等奖 2 + 1
+            amount += this.combine(4, 3) * this.combine(2, 1) * 5
+            console.log(amount)
+
+
+            amount = 0
+            // 01,02,03,08, 17,28,30@05,06, 09 前区中4个，后区中2个
+            // 四等奖 4 + 2
+            amount += this.combine(3, 1) * 3000                                         // 3注
+            // 五等奖 4 + 1
+            amount += this.combine(3, 1) * this.combine(2, 1) * 300                     // 6注
+            // 六等奖 3 + 2
+            amount += this.combine(4, 3) * this.combine(3, 2) * 200                     // 12注
+            // 七等奖 4 + 0
+            // amount += this.combine(4, 4) * 100
+            // 八等奖 3 + 1
+            amount += this.combine(4, 3) * this.combine(3, 2) * this.combine(2, 1) * 15 // 24注
+            // 八等奖 2 + 2
+            amount += this.combine(4, 2) * this.combine(3, 3) * this.combine(2, 2) * 15 // 6注
+            // 九等奖 3 + 0
+            // amount += this.combine(4, 3) * this.combine(3, 2) * 5
+            // 九等奖 1 + 2
+            // amount += this.combine(4, 2) * this.combine(3, 3) * 5                       // 6注
+            // 九等奖 2 + 1
+            amount += this.combine(4, 2) * this.combine(3, 3) * this.combine(2, 1) * 5  // 12 注
+            // 九等奖 0 + 2
+            // amount += 5
+            console.log(amount)
+
         },
         methods: {
             calculate: function () {

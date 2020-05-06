@@ -52,15 +52,15 @@
      *  输出Goodbye Jack
      *  函数和变量会被提升，变量提升是将变量的申明放在作用域顶部
      */
-    // var name = 'World!';
-    // (function () {
-    //     if (typeof name === 'undefined') {
-    //         var name = 'Jack';
-    //         console.log('Goodbye ' + name);
-    //     } else {
-    //         console.log('Hello ' + name);
-    //     }
-    // })();
+    var name = 'World!';
+    (function () {
+        if (typeof name === 'undefined') {
+            var name = 'Jack';
+            console.log('Goodbye ' + name);
+        } else {
+            console.log('Hello ' + name);
+        }
+    })();
 
     /** 6.
      * 死循环，浏览器卡死，最后i等于END
@@ -79,7 +79,6 @@
      */
     // var ary = [0,1,2];
     // ary[10] = 10;
-    // console.log(ary.length);
     // var s = ary.filter(function(x) { return x === undefined;});
     // console.log(s);
 
@@ -235,7 +234,7 @@
      * chrome中报错
      * reverse方法会返回调用者this，x()方法执行的时候是全局上下文，所以是window
      */
-    // var x = [].reverse;
+    // var x = Array.prototype.reverse;
     // x();
 
     /**21.
@@ -263,28 +262,28 @@
      * x.toString()是一个语法错误
      * 3.是合法的数字
      */
-    // console.log(3.toString())
-    // console.log(3..toString())
-    // console.log(3...toString())
+// console.log(3.toString());
+// console.log(3..toString());
+// console.log(3...toString());
 
     /** 25
      * 第一句输出1,
      * 第二句报错
      * 立即执行表达式里面var定义的时候是局部变量，不带的情况下是全局变量
      */
-    // (function(){
-    //     var x = y = 1;
-    // })();
-    // console.log(y);
-    // console.log(x);
+// (function(){
+//     var x = y = 1;
+// })();
+// console.log(y);
+// console.log(x);
 
     /*** 26
      * 输出 false false
      * 即使正则的字面量一致, 他们也不相等
      */
-    // var a = /123/, b = /123/;
-    // console.log(a == b);
-    // console.log(a === b);
+// var a = /123/, b = /123/;
+// console.log(a == b);
+// console.log(a === b);
 
     /** 27
      * 输出false false false true
@@ -293,16 +292,17 @@
     // var a = [1, 2, 3], b = [1, 2, 3], c = [1, 2, 4];
     // console.log(a ==  b);
     // console.log(a === b);
-    // console.log(a > c);
-    // console.log(a < c);
+    // console.log(a < b);
+    // console.log(a > b);
+    // console.log(b < c);
 
     /*** 28
      * 输出 [false, true]
      * javascript中prototype是方法才有的属性，对象的prototype是undefined
      * 对象的原型可以通过Object。getPrototypeOf()方法获取
      */
-    // var a = {}, b = Object.prototype
-    // console.log([a.prototype === b, Object.getPrototypeOf(a) === b]);
+// var a = {}, b = Object.prototype
+// console.log([a.prototype === b, Object.getPrototypeOf(a) === b, a.__proto__ === b]);
 
     /** 29
      * 输出false
@@ -343,10 +343,11 @@
      * eval(f.name)相当于执行f， 再用typeof操作，得到Function
      * parent.name是undefined， eval(undefined) 报错
      */
-    // function f() {}
+    // function f() {console.log('execute')}
     // var parent = Object.getPrototypeOf(f);
     // console.log(f.name); // ?
     // console.log(parent.name); // ?
+    // console.log(Function.prototype == parent) // true
     // console.log(typeof eval(f.name)); // ?
     // console.log(typeof eval(parent.name)); //  ?
 

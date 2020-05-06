@@ -468,17 +468,27 @@
      * 数组去重的方法
      * 利用对象的属性不能重复的特点
      */
-    // let n = ['qiang','ming','tao','li','liang','you','qiang','tao'].reduce(function(seed, item, index) {
-    //     seed[item] = index;
-    //     return seed;
-    // },{})
-    // console.log(n);
+        // let n = ['qiang','ming','tao','li','liang','you','qiang','tao'].reduce(function(seed, item, index) {
+        //     seed[item] = index;
+        //     return seed;
+        // },{})
+        // console.log(n);
 
-    let s = Object.getOwnPropertyNames(['qiang','ming','tao','li','liang','you','qiang','tao'].reduce(function(seed, item, index) {
-        seed[item] = index;
-        return seed;
-    },{}))
-    console.log(s);
+        // let s = Object.getOwnPropertyNames(['qiang','ming','tao','li','liang','you','qiang','tao'].reduce(function(seed, item, index) {
+        //     seed[item] = index;
+        //     return seed;
+        // },{}))
+        // console.log(s);
+
+    /**
+     * 从数组中随机抽取不重复的元素
+     * @type {number}
+     */
+    var count = 5;
+    var originalArray = new Array(count).fill(1).map((i, index) => i + index);//原数组
+    console.log(originalArray);
+    originalArray.sort(() => 0.5 - Math.random());
+    console.log(originalArray);
 
 </script>
 </body>
