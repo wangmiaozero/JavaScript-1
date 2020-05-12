@@ -374,7 +374,27 @@
     // const data = await fetch("https://api.example.com");
     /**
      * 上面代码中，await命令独立使用，没有放在async函数里面，就会报错。
+     *
+     * 目前，有一个语法提案，允许模块的顶层独立使用await命令，是的上面那行代码不会报错。
+     * 这个提案的目的，是借用await解决异步加载的问题。
      * */
+
+    // awaiting.js
+    // let output;
+    // async function main() {
+    //     const dynamic = await import(someMission);
+    //     const data = await fetch(url);
+    //     output = someProcess(dynamic.default, data);
+    // }
+    // main();
+    // export {output};
+    /**
+     * 上面代码中，awaiting.js除了输出output，还默认输出一个Promise对象（async函数立即执行后，
+     * 返回一个Promise对象），这个对象判断异步操作是否结束。
+     *
+     * 下面是加载这个模块的新写法。
+     * /
+
 
 
     // (async function () {
@@ -460,10 +480,10 @@
     /**
      * async函数里面可以没有await
      */
-    async function f() {
-      console.log('1')
-    }
-    f()
+    // async function f() {
+    //   console.log('1')
+    // }
+    // f()
 </script>
 </body>
 </html>
