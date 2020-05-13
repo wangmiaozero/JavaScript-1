@@ -59,8 +59,8 @@
     /**
      * （3）组合继承
      * 组合继承是将类式继承和构造函数继承结合起来使用。
-     * 这样使用call方法调用一次父类方法，引用属性互不影响，继承父类原型中的属性和方法
-     * 的时候又调用了一次父类构造函数。
+     * 这样使用call方法调用一次父类方法，引用属性互不影响。这种方式有两次调用父类构造函数的问题，
+     * 继承父类原型中的属性和方法的时候又调用了一次父类构造函数。
      */
     // function SuperClass(name) {
     //     this.name = name;
@@ -151,40 +151,40 @@
 
     /**
      * （6）寄生组合继承
-     * 只从父类原型中复制一份属性和方法的集合，不调用父类构造方法。
+     * 不调用父类构造方法，只从父类原型中复制一份属性和方法的集合。
      * 父类内部的属性方法通过call获取。
-     * 此外修改父类原型的constructor指针，让它指向子类构造函数。
+     * 此外修改父类原型的constructor指针，让它指向子类构造函数，这样子类原型更加合理。
      */
-    function inheritObject(o) {
-        function F() {}
-        F.prototype = o;
-        return new F();
-    }
-    function inheritPrototype(son, father) {
-        var p = inheritObject(father.prototype);
-        p.constructor = son;
-        son.prototype = p;
-    }
-
-    function SuperClass(name) {
-        this.name = name;
-        this.colors = ['red', 'blue'];
-    }
-    function SubClass(name) {
-        SuperClass.call(this, name);
-    }
-
-    inheritPrototype(SubClass, SuperClass);
-
-    var instance = new SubClass("instance");
-    console.log(instance.name); //instance
-    console.log(instance.colors); //["red", "blue"]
-    instance.colors.push("green");
-    console.log(instance.colors); //["red", "blue", "green"]
-
-    var anotherInstance = new SubClass("anotherInstance");
-    console.log(anotherInstance.name); // anotherInstance
-    console.log(anotherInstance.colors); //["red", "blue", "green"]
+    // function inheritObject(o) {
+    //     function F() {}
+    //     F.prototype = o;
+    //     return new F();
+    // }
+    // function inheritPrototype(son, father) {
+    //     var p = inheritObject(father.prototype);
+    //     p.constructor = son;
+    //     son.prototype = p;
+    // }
+    //
+    // function SuperClass(name) {
+    //     this.name = name;
+    //     this.colors = ['red', 'blue'];
+    // }
+    // function SubClass(name) {
+    //     SuperClass.call(this, name);
+    // }
+    //
+    // inheritPrototype(SubClass, SuperClass);
+    //
+    // var instance = new SubClass("instance");
+    // console.log(instance.name); //instance
+    // console.log(instance.colors); //["red", "blue"]
+    // instance.colors.push("green");
+    // console.log(instance.colors); //["red", "blue", "green"]
+    //
+    // var anotherInstance = new SubClass("anotherInstance");
+    // console.log(anotherInstance.name); // anotherInstance
+    // console.log(anotherInstance.colors); //["red", "blue", "green"]
 
 
 

@@ -16,8 +16,14 @@
      * 某些方法同时在Object和Reflect对象上部署，未来的新方法将只部署在Reflect对象上。也就是说，从Reflect对象上可以
      * 拿到语言内部的方法。
      *
+     * 一些方法属于JavaScript语言内部方法，比如Object.defineProperty放在Object对象上
+     * 不太合理，都可以放在Reflect上
+     *
      * （2） 修改某些Object方法的返回结果，让其变得更合理。例如，Object.defineProperty(obj, name, desc)在无法定义属性时，
      * 会抛出一个错误，而Reflect.defineProperty(obj, name, desc)则会返回false
+     *
+     * 一些方法的返回结果不太合理，通过Reflect可以让他变得更加合理。
+     *
      */
     // // 老写法
     // try {
@@ -37,6 +43,8 @@
      * Reflect.deleteProperty(obj, name)让他们变成了函数行为。
      * 老写法： 'assign' in Object  // true
      * 新写法： Reflect.has(object, 'assign') // true
+     * 命令式的写法改成函数式的写法。
+     *
      */
     // console.log('assign' in Object) // true
     // console.log(Reflect.has(Object, 'assign')) // true
@@ -44,6 +52,8 @@
     /**
      * (4) Reflect对象的方法与Proxy对象的方法意义对象，只要是Proxy对象的方法，就能在Reflect对象上找到对应的方法。这就让Proxy对象可以方便地
      * 调用对应的Reflect方法，完成默认行为，作为修改行为的基础。就是说，不管Proxy怎么修改默认行为，总可以在Reflect上获取默认行为。
+     * Reflect和Proxy一一对应。
+     *
      */
     // Proxy(target, {
     //   set: function (target, name, value, receiver) {
