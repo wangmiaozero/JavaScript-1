@@ -10,7 +10,10 @@
     //     document.write(JSON.stringify(str) + '<br>');
     // };
 
-    //  /**扩展运算符用于将一个数组转换为用空格分割的参数序列**/
+    /**
+     * 1. 扩展运算符
+     * 扩展运算符用于将一个数组转换为用空格分割的参数序列
+     * */
     // console.log(...[1, 2, 3]);
     // console.log(1, ...[1, 2, 3], 4, 5);
 
@@ -54,10 +57,20 @@
     // 注意只有在函数调用的时候，扩展运算符才可以放在圆括号内，否则会报错
 
     /**替代apply方法
+     * 由于扩展运算符可以展开数组，所以不再需要apply方法，将数组转为函数的参数了。
+     * apply接受的参数类型是逗号分隔的
      * */
     // ES5的写法
     //  var max1 = Math.max.apply(null, [14,3,77]);
     //  console.log(max1);
+
+    // function getMaxOfArray(arr) {
+    //     console.log(arguments)
+    //     return Math.max.apply(null, arr);
+    // }
+    // var arr = [1, 2, 3];
+    // console.log(getMaxOfArray(arr));
+
     // ES6的写法
     //    var max2 = Math.max(...[14, 3, 77]);
     //    console.log(max2);
@@ -468,27 +481,32 @@
      * 数组去重的方法
      * 利用对象的属性不能重复的特点
      */
-        // let n = ['qiang','ming','tao','li','liang','you','qiang','tao'].reduce(function(seed, item, index) {
-        //     seed[item] = index;
-        //     return seed;
-        // },{})
-        // console.log(n);
-
-        // let s = Object.getOwnPropertyNames(['qiang','ming','tao','li','liang','you','qiang','tao'].reduce(function(seed, item, index) {
-        //     seed[item] = index;
-        //     return seed;
-        // },{}))
-        // console.log(s);
+    // let n = ['qiang','ming','tao','li','liang','you','qiang','tao'].reduce(function(seed, item, index) {
+    //     seed[item] = index;
+    //     return seed;
+    // },{});
+    // console.log(n);
+    //
+    // let s = Object.getOwnPropertyNames(['qiang','ming','tao','li','liang','you','qiang','tao'].reduce(function(seed, item, index) {
+    //     seed[item] = index;
+    //     return seed;
+    // },{}));
+    // console.log(s);
 
     /**
      * 从数组中随机抽取不重复的元素
      * @type {number}
      */
-    var count = 5;
-    var originalArray = new Array(count).fill(1).map((i, index) => i + index);//原数组
-    console.log(originalArray);
-    originalArray.sort(() => 0.5 - Math.random());
-    console.log(originalArray);
+    // var count = 5;
+    // var originalArray = new Array(count).fill(1).map((i, index) => i + index);//原数组
+    // console.log(originalArray);
+    // originalArray.sort(() => 0.5 - Math.random());
+    // console.log(originalArray);
+
+    /**
+     * 五种方式实现数组扁平化
+     * https://www.cnblogs.com/wind-lanyan/p/9044130.html
+     */
 
 </script>
 </body>

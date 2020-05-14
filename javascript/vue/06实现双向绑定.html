@@ -3,15 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>双向绑定的实现</title>
+    <style>
+        .detail {
+            list-style-type: decimal;
+        }
+        .detail li {
+            height: 30px;
+            line-height: 30px;
+        }
+    </style>
 </head>
 <body>
 <div id="app">
     <input type="text" v-model="text">
     {{ text }}
 </div>
+<div>
+    <ul class="detail">
+        <li>给Vue定义data选项；</li>
+        <li>使用Object.defineProperty将data选项中的属性转化成getter，setter属性；</li>
+        <li>getter将观察者添加到主题对象中，收集依赖；</li>
+        <li>setter中通知变更，给dom元素赋值；</li>
+        <li>编译，将el节点及子节点编译到render函数；</li>
+        <li>编译，触发getter，将当前节点对应的data属性添加到主题中；</li>
+        <li>编译，监听change时间，当前节点对应的data属性值变化，触发setter，通知变更，更新dom节点值，反馈给用户；</li>
+    </ul>
+</div>
 <script>
     /**
      * 使用defineProperty将data中的text设置为vm的访问器属性
+     * 建立依赖，包含get中依赖收集和set中通知变更
      * @param obj 对象
      * @param key 属性名
      * @param val 属性值
@@ -21,7 +42,7 @@
         var dep = new Dep();
         Object.defineProperty(obj, key, {
             get: function () {
-                // 依赖收集，如果主题对象类的静态属性target有值， 此时Watcher方法被调用，给主题对象添加订阅者
+                // 依赖收集，如果主题对象类的静态属性target有值， 此时Watcher构造方法被调用，给主题对象添加订阅者
                 if (Dep.target) dep.addSub(Dep.target);
                 return val;
             },
@@ -62,7 +83,8 @@
     }
 
     /**
-     * 给子节点初始化绑定vue实例中的属性值，并为节点生成Watcher
+     * 编译，将el节点编译成render，并监听
+     * 给子节点初始化绑定vue实例中的属性值，并为节点生成观察者
      * @param node 子节点
      * @param vm vue实例
      */
@@ -81,10 +103,12 @@
                         vm[name] = e.target.value
                     });
                     // 将data的值赋给该node
+                    // 这里会触发getter并执行if (Dep.target) dep.addSub(Dep.target); 从而收集依赖
                     node.value = vm[name];
                     node.removeAttribute('v-model');
                 }
             }
+            // 将data的值赋给该node
             new Watcher(vm, node, name, 'input')
         }
         if (node.nodeType === 3) {
@@ -98,8 +122,9 @@
     }
 
     /**
-     * 编译 HTML 过程中，为每个与 data 关联的节点生成一个 Watcher，收集依赖的时候会addSub到subs集合中，修改data数据的时候触发dep对象的
-     　　　* notify通知所有Wathcer对象去修改对应视图
+     * 观察者
+     * 编译HTML过程中，为每个与 data 关联的节点生成一个 Watcher，收集依赖的时候会addSub到subs集合中，修改data数据的时候触发dep对象的
+　　　* notify通知所有Watcher对象去修改对应视图
      * @param vm
      * @param node
      * @param name
@@ -137,7 +162,7 @@
     }
 
     /**
-     * 定义一个发布者
+     * 定义一个发布者主题
      * @constructor
      */
     function Dep() {
@@ -163,16 +188,18 @@
     };
 
     /**
-     * 定义Vue类
+     * 定义Vue构造函数
      * @param options Vue参数选项
      * @constructor
      */
     function Vue(options) {
+        // data数据选项
         this.data = options.data;
         var data = this.data;
+        // 观察，给data属性定义getter，setter，并建立依赖
         observe(data, this);
         var id = options.el;
-        // 编译，收集依赖
+        // 编译，收集依赖，传递根节点和当前对象
         var dom = nodeToFragment(document.getElementById(id), this);
         // 编译完成后，将dom返回到app中
         document.getElementById(id).appendChild(dom);
