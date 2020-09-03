@@ -5,7 +5,8 @@
     <title>雪花算法</title>
 </head>
 <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/big-integer/1.6.32/BigInteger.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/big-integer/1.6.32/BigInteger.min.js"></script>-->
+<a href="http://www.baidu.com">baidu</a>
 <script>
     /**
      * 原生BigInt实现
@@ -123,9 +124,13 @@
     // console.log(2n >= 2); // true
 
 
-    const mixed = [4n, 6, -12n, 10, 4, 0, 0n];
-    mixed.sort();
-    console.log(mixed);
+    // const mixed = [4n, 6, -12n, 10, 4, 0, 0n];
+    // mixed.sort();
+    // console.log(mixed);
+
+    window.addEventListener("popstate", (event) => {
+        console.log("location: " + document.location + ", state:" + JSON.stringify(event.state))
+    })
 </script>
 </body>
 </html>

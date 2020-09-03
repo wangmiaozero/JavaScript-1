@@ -118,11 +118,29 @@
     // let result = replaceSql(sql, param)
 
 
-    let str = 'F:\\demo\\parttimejob\\parttimeApp\\public\\upload\\tmp\\9cf92a6dc400c753604f7e2846f8a703';
 
-    console.log(str.replace(/\\tmp/, '\\test'))
+    // let str = 'F:\\demo\\parttimejob\\parttimeApp\\public\\upload\\tmp\\9cf92a6dc400c753604f7e2846f8a703';
 
+    // console.log(str.replace(/\\tmp/, '\\test'))
 
+    let url = 'https://dev.coc.10086.cn/staging-coc2/web-promotion/double-festival/index.html#/?artifact=ced0f9171d334d91ba9da0866e06730e&type=00'
+    function getQueryString(name) {
+        let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+        let r = (window.location.search || window.location.hash).substr(1).match(reg)
+        if (r != null) return unescape(r[2])
+        return null
+    }
+
+    function getUrlKey(name) {
+        return (
+            decodeURIComponent(
+                (new RegExp(
+                    '[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)'
+                ).exec(location.href) || [, ''])[1].replace(/\+/g, '%20')
+            ) || null
+        )
+    }
+    console.log(getQueryString(url))
 </script>
 </body>
 </html>

@@ -52,7 +52,7 @@
     //     console.log(value);
     // });
 
-    /** 下面代码中Promise新建立之后立即执行，所有首先输出的是Promise，然后，then方法指定的回调喊，将在当前脚本所有同步执行完
+    /** 下面代码中Promise新建立之后立即执行，所有首先输出的是Promise，然后，then方法指定的回调函数，将在当前脚本所有同步执行完
      * 后才会执行，所以Resolved最后执行。所以代码输出如下：
      * Promise
      * Hi
@@ -80,15 +80,15 @@
     //         image.src = url;
     //     })
     // }
-    // loadImageAsync('https://avatar.csdn.net/2/1/1/3_m0_37682004.jpg').then(image => {
+    // loadImageAsync('./../images/pic1.jpg').then(image => {
     //     document.body.appendChild(image);
     // });
 
     /**下面代码中getJSON是对XMLHTTPRequest对象的封装，用于发出一个针对JSON数据的http请求，并返回一个Promise对象。
      * 在getJSON内部，resolve函数和reject函数调用时，都带有参数。
-     * 如果调用resolve函数和reject函数时导游参数，那么他们的参数就会被传递给回调函数，reject函数的参数通常是Error对象的实例，
+     * 如果调用resolve函数和reject函数时带有参数，那么他们的参数就会被传递给回调函数，reject函数的参数通常是Error对象的实例，
      * 标识抛出错误；*/
-    // let getJson = function (url) {
+    // let getJson1 = function (url) {
     //   let promise = new Promise((resolve, reject) => {
     //   	let client = new XMLHttpRequest();
     //   	client.open('GET', url);
@@ -96,7 +96,7 @@
     //   	client.responseType = 'json';
     //   	client.setRequestHeader('Accpt', 'application/json');
     //   	client.send();
-    //
+    
     //   	function handler () {
     //   		if (this.readyState !== 4) {
     //   			return;
@@ -110,7 +110,7 @@
     //   });
     //   return promise;
     // }
-    // getJson('posts.json').then(json => {
+    // getJson1('posts.json').then(json => {
     // 	console.log(json);
     // }, error => {
     //   console.log(`出错了`, error);
@@ -128,15 +128,15 @@
     // })
 
     /**p1是一个promise，3秒后变成rejected，p2的状态在1秒后改变，resolve方法返回的是p1。由于p2返回的是另一个Promise，导致p2自己的状态
-     * 无效了，由p1的状态决定了p2的状态，所有后面then语句都编程针对后者p1，又过了2秒p1编程rejected，导致触发catch方法指定的回调函数。
-     * 调用resolve或者reject并不会中介Promise的参数函数的执行。*/
-    // var p1 = new Promise((resolve, reject) => {
-    //     setTimeout(() => reject(new Error('fail')), 3000)
-    // });
-    // var p2 = new Promise((resolve, reject) => {
-    //     setTimeout(() => resolve(p1), 1000);
-    // });
-    // p2.then(result => console.log(result)).catch(error => console.log(error));
+     * 无效了，由p1的状态决定了p2的状态，所以，后面then语句变成针对后者（p1），又过了2秒p1编程rejected，导致触发catch方法指定的回调函数。
+     * 调用resolve或者reject并不会终结Promise的参数函数的执行。*/
+    var p1 = new Promise((resolve, reject) => {
+        setTimeout(() => reject(new Error('fail')), 3000)
+    });
+    var p2 = new Promise((resolve, reject) => {
+        setTimeout(() => resolve(p1), 1000);
+    });
+    p2.then(result => console.log(result)).catch(error => console.log(error));
 
     /**下面代码中调用resolve(1)以后，后面的write(2)还是会执行，并且会先打印出来，这是因为立即resolve的Promise是在本轮时间循环的末尾执行，
      * 总是晚于本轮循环的同步任务*/
