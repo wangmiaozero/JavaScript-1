@@ -11,14 +11,16 @@
 		// 首页里的title
 		var $postTitle = $('.forFlow .postTitle2')
 		// 绝对定位距离顶部高度
-		var topValue = $("#header").height() + 10;
+        var topValue = $("#header").height() + 10;
+        // top_nav的高度
+        var topNavHeight = $("#top_nav").height() + 10;
 		// 正则表达式，配置数组
 		var hxReg = RegExp(/\d/);
 		if($ph.length > 0 || $postTitle.length > 0) {
 			//添加导航目录的内容，导航栏放在右侧
 			$('#main').append('<div id="sidebar_scroller" class="catListPostArchive sidebar-block"><h3 class="catListTitle">导航目录</h3><ul class="nav"></ul></div>');
 			//取当前边栏的宽度
-			$('#sidebar_scroller').css({'width': $('#blog-sidecolumn').width(), 'top': topValue, 'max-height': window.screen.availHeight - topValue - 46});
+			$('#sidebar_scroller').css({'width': $('#blog-sidecolumn').width(), 'top': '134px', 'max-height': window.screen.availHeight - topValue - 46});
 			//让导航目录停留在页面顶端
 			$('#sidebar_scroller').stickUp({ marginTop: 'auto'});
 			//正文，遍历文章里每个h标签
@@ -55,7 +57,7 @@
 
 			$(document).on('scroll', debounce(function() {
 				if($(document).scrollTop() == 0) {
-					$("#sidebar_scroller").animate({top: topValue, position: 'fixed;!important'}, 300);
+					$("#sidebar_scroller").animate({top: '134px', position: 'fixed;!important'}, 300);
 				}
 			}, 800))
 		}
