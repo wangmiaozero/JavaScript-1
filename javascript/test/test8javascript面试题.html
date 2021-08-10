@@ -119,25 +119,35 @@
      * 代码输出的都是5，并且是先输出一个5，最后几乎同时输出5个5，这个是因为JavaScript有同步任务和异步任务，同步任务立即执行，异步任务先
      * 进入到异步任务队列中，等所有的同步任务执行完毕，异步任务队列判断是否可执行，满足条件就可以执行。setTimeout就属于异步任务。
      **/
-    // for(var i = 0; i < 5; i++){
-    //     setTimeout(function () {
-    //         console.log(new Date(), i);
-    //     }, 1000)
-    // }
-    // console.log(new Date, i);
+    /* for(var i = 0; i < 5; i++){
+        setTimeout(function () {
+            console.log(new Date(), i);
+        }, 1000)
+    }
+    console.log(new Date, i); */
 
 
     /**
      * 输出5->0,1,2,3,4
      * 使用立即执行函数表达式传递参数，setTimeout内的代码仍然在同步任务执行完立即执行，并且几乎同时执行
      */
-    // for (var i = 0; i < 5; i++) {
-    //     (function (j) {
-    //         setTimeout(function () {
-    //             console.log(new Date, j);
-    //         }, 1000)
-    //     })(i);
-    // }
+    /* for (var i = 0; i < 5; i++) {
+        (function (j) {                         //给闭包传参i，j=i
+            setTimeout(function () {
+                console.log(new Date, j);
+            }, 1000)
+        })(i);
+    }
+    console.log(new Date, i); */
+
+    /* 使用let变量，每次循环后JavaScript引擎都会先记住当前变量i的值并销毁，然后再用let命令生成一个新的变量i，这个变量在原来基础上加1，但是这个i
+       只能在循环内部使用，外部没有。
+    */
+/*     for (let i = 0; i < 5; i++) {
+        setTimeout(function () {
+            console.log(new Date, i);
+        }, 1000)
+    } */
     // console.log(new Date, i);
 
 
@@ -145,35 +155,25 @@
      * 传入参数，JavaScript给形参传值，如果是基本类型（Number，BigInt，Undefined，String，Symbol，NaN，Boolean）传递的是值。调用
      * output函数的时候传递值。
      */
-    // function output(i) {
-    //     setTimeout(function () {
-    //         console.log(new Date, i);
-    //     }, 1000);
-    // }
-    // for (var i = 0; i < 5; i++) {
-    //     output(i);
-    // }
-    // console.log(new Date, i);
-
-
-    /**
-     * for循环中的let会记住当前计数器，但是只能在循环内部使用，外部使用会报错
-     */
-    // for (let i = 0; i < 5; i++) {
-    //     setTimeout(function () {
-    //         console.log(new Date, i);
-    //     }, 1000);
-    // }
-    // console.log(new Date, i);
+    /* function output(i) {
+        setTimeout(function () {
+            console.log(new Date, i);
+        }, 1000);
+    }
+    for (var i = 0; i < 5; i++) {
+        output(i);   //这里传过去的i被复制了一份
+    }
+    console.log(new Date, i); */
 
     /**
      * 输出0->1->2->3->4->5
+     * 
      */
     // for (var i = 0; i < 5; i++) {
     //     (function (j) {
     //         setTimeout(function () {
     //             console.log(new Date, j);
-    //         }, 1000 * j);
+    //         }, 1000 * j); // 这里修改 0~4 的定时器时间
     //     })(i);
     // }
     // setTimeout(function () {
@@ -183,26 +183,27 @@
     /**
      * Promise实现
      * */
-    // const task = [];
-    // for (var i = 0; i < 5; i++) {
-    //     (j => {
-    //         task.push(new Promise(resolve => {
-    //             setTimeout(() => {
-    //                 console.log(new Date, j);
-    //                 resolve(); // 一定要改变状态
-    //             }, 1000 * j);
-    //         }))
-    //     })(i);
-    // }
-    //
-    // Promise.all(task).then(() => {
-    //     setTimeout(() => {
-    //         console.log(new Date, i);
-    //     }, 1000);
-    // });
+/*     const task = [];
+    for (var i = 0; i < 5; i++) {  //最后要输出6，所以这里使用var
+        (j => {
+            task.push(new Promise(resolve => {
+                setTimeout(() => {
+                    console.log(new Date, j);
+                    resolve(); // 一定要改变状态
+                }, 1000 * j);
+            }))
+        })(i);
+    }
+    
+    Promise.all(task).then(() => {
+        setTimeout(() => {
+            console.log(new Date, i);
+            console.log(window.i)           //变量i是全局的
+        }, 1000);
+    }); */
 
     /**
-     * Promise实现
+     * Promise实现，promise对象放在数组中更加简洁
      * */
     //数组存放异步操作的 Promise
     // const task = []
@@ -231,12 +232,11 @@
     //     setTimeout(resolve, timeountMS);
     // });
     // (async () => {
-    //     for (var i = 0; i < 5; i++) {
+    //     for (let i = 0; i < 5; i++) {
     //         await sleep(1000)
     //         console.log(new Date(), i);
     //     }
     //     await sleep(1000)
-    //     console.log(new Date(), i);
     // })()
 
 
@@ -251,23 +251,23 @@
     // console.log('1')
 
     //可以采用JS的异步新特性Promise类来实现
-    sleep = function(delay) {
-        var p = new Promise(function(resolve, reject){ //做一些异步操作
-            setTimeout(function(){
-                resolve();
-            }, delay);
-        });
-        return p;
-    }
+    // sleep = function(delay) {
+    //     var p = new Promise(function(resolve, reject){ //做一些异步操作
+    //         setTimeout(function(){
+    //             resolve();
+    //         }, delay);
+    //     });
+    //     return p;
+    // }
 
     //测试代码
-    async function test_sleep() {
-        console.log("test1");
-        await sleep(2000);
-        console.log("test2");
-    }
+    // async function test_sleep() {
+    //     console.log("test1");
+    //     await sleep(2000);
+    //     console.log("test2");
+    // }
 
-    test_sleep();
+    // test_sleep();
 
 </script>
 </body>
